@@ -1,0 +1,11 @@
+D:\FinancaFacil\src\ControleFinanceiro.Domain\bin\Debug\net9.0\ControleFinanceiro.Domain.deps.json
+D:\FinancaFacil\src\ControleFinanceiro.Domain\bin\Debug\net9.0\ControleFinanceiro.Domain.dll
+D:\FinancaFacil\src\ControleFinanceiro.Domain\bin\Debug\net9.0\ControleFinanceiro.Domain.pdb
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ControleFinanceiro.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ControleFinanceiro.Domain.AssemblyInfoInputs.cache
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ControleFinanceiro.Domain.AssemblyInfo.cs
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ControleFinanceiro.Domain.csproj.CoreCompileInputs.cache
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ControleFinanceiro.Domain.dll
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\refint\ControleFinanceiro.Domain.dll
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ControleFinanceiro.Domain.pdb
+D:\FinancaFacil\src\ControleFinanceiro.Domain\obj\Debug\net9.0\ref\ControleFinanceiro.Domain.dll

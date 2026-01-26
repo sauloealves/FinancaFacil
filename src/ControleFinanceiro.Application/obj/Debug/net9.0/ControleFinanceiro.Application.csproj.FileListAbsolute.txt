@@ -1,0 +1,15 @@
+D:\FinancaFacil\src\ControleFinanceiro.Application\bin\Debug\net9.0\ControleFinanceiro.Application.deps.json
+D:\FinancaFacil\src\ControleFinanceiro.Application\bin\Debug\net9.0\ControleFinanceiro.Application.dll
+D:\FinancaFacil\src\ControleFinanceiro.Application\bin\Debug\net9.0\ControleFinanceiro.Application.pdb
+D:\FinancaFacil\src\ControleFinanceiro.Application\bin\Debug\net9.0\ControleFinanceiro.Domain.dll
+D:\FinancaFacil\src\ControleFinanceiro.Application\bin\Debug\net9.0\ControleFinanceiro.Domain.pdb
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.csproj.AssemblyReference.cache
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.AssemblyInfoInputs.cache
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.AssemblyInfo.cs
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.csproj.CoreCompileInputs.cache
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\Controle.8EC8DDDC.Up2Date
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.dll
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\refint\ControleFinanceiro.Application.dll
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ControleFinanceiro.Application.pdb
+D:\FinancaFacil\src\ControleFinanceiro.Application\obj\Debug\net9.0\ref\ControleFinanceiro.Application.dll

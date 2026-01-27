@@ -1,20 +1,27 @@
 ﻿using ControleFinanceiro.Application.DTOs;
 using ControleFinanceiro.Application.UseCases;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinanceiro.API.Controllers {
+    [Authorize]
     [ApiController]
     [Route("api/auth")]
     public class AuthController :ControllerBase {
         private readonly RegisterUserUseCase _registerUserUseCase;
         private readonly LoginUserUseCase _loginUserUseCase;
+        private readonly ForgotPasswordUseCase _forgotPasswordUseCase;  
+        private readonly ResetPasswordUseCase _resetPasswordUseCase;
 
-        public AuthController(RegisterUserUseCase registerUserUseCase, LoginUserUseCase loginUserUseCase) {
+        public AuthController(RegisterUserUseCase registerUserUseCase, LoginUserUseCase loginUserUseCase, ForgotPasswordUseCase forgotPasswordUseCase, ResetPasswordUseCase resetPasswordUseCase) {
             _registerUserUseCase = registerUserUseCase;
             _loginUserUseCase = loginUserUseCase;
+            _forgotPasswordUseCase = forgotPasswordUseCase;
+            _resetPasswordUseCase = resetPasswordUseCase;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserRequest request) {
             try {
@@ -27,6 +34,7 @@ namespace ControleFinanceiro.API.Controllers {
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request) {
             try {
@@ -35,6 +43,25 @@ namespace ControleFinanceiro.API.Controllers {
             } catch(InvalidOperationException ex) {
                 return Unauthorized(new { message = ex.Message });
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request) {
+            await _forgotPasswordUseCase.ExecuteAsync(request);
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request) {
+            await _resetPasswordUseCase.ExecuteAsync(request);
+            return Ok();
+        }
+
+        [HttpPost("teste")]        
+        public async Task<IActionResult> Teste() {
+            return Ok("Autenticado com sucesso!");
         }
     }
 }

@@ -7,10 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ControleFinanceiro.Application.Interfaces {
-    public interface IUserRepository {
-        Task<User?> GetByEmailAsync(string email);
-        Task AddAsync(User user);
-        Task<User?> GetByIdAsync(Guid userId);
-        Task UpdateAsync(User user);
+    public interface IPasswordResetTokenRepository {
+        Task AddAsync(PasswordResetToken token);
+        Task<PasswordResetToken?> GetValidAsync(string token);
+        Task UpdateAsync(PasswordResetToken token);
     }
 }

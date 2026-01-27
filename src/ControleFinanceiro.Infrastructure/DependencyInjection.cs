@@ -23,6 +23,7 @@ namespace ControleFinanceiro.Infrastructure {
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }

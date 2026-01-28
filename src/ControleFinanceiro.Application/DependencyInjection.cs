@@ -13,6 +13,8 @@ namespace ControleFinanceiro.Application {
         public static IServiceCollection AddApplication(this IServiceCollection services) {
             services.AddScoped<RegisterUserUseCase>();
             services.AddScoped<LoginUserUseCase>();
+            services.AddScoped<ForgotPasswordUseCase>();
+            services.AddScoped<ResetPasswordUseCase>();
             return services;
         }
     }

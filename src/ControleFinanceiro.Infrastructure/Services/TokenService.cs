@@ -39,7 +39,8 @@ namespace ControleFinanceiro.Infrastructure.Services {
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email.Value),
-                new Claim("name", user.Name)
+                new Claim("name", user.Name),
+                new Claim("plan", user.Plan)
             };
 
             var token = new JwtSecurityToken(

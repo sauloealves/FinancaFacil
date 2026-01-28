@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace ControleFinanceiro.Infrastructure.Persistence {
     public class AppDbContext :DbContext {
         public DbSet<User> Users => Set<User>();
+        public DbSet<PasswordResetToken> PasswordResetToken => Set<PasswordResetToken>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) {

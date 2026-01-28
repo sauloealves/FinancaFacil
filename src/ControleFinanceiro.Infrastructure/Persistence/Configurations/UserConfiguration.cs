@@ -40,6 +40,10 @@ namespace ControleFinanceiro.Infrastructure.Persistence.Configurations {
 
             builder.Property(u => u.CreatedAt)
                 .IsRequired();
+
+            builder.Property(u => u.Plan)
+                .IsRequired()
+                .HasMaxLength(50);
         }
     }
 }

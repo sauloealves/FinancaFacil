@@ -14,6 +14,7 @@ namespace ControleFinanceiro.Domain.Entities {
         public PasswordHash PasswordHash { get; private set; }
         public bool Active { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public string Plan { get; private set; } = "FREE";
 
         private User() { } // EF Core
 
@@ -33,6 +34,10 @@ namespace ControleFinanceiro.Domain.Entities {
         public void ChangePassword(PasswordHash newPasswordHash) {
             PasswordHash = newPasswordHash
                 ?? throw new ArgumentException("Nova senha inválida.");
+        }
+
+        public void ChangePlan(string plan) {
+            Plan = plan;
         }
     }
 }

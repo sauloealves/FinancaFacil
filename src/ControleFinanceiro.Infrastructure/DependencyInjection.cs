@@ -26,6 +26,9 @@ namespace ControleFinanceiro.Infrastructure {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             return services;
         }

@@ -15,6 +15,9 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<LoginUserUseCase>();
             services.AddScoped<ForgotPasswordUseCase>();
             services.AddScoped<ResetPasswordUseCase>();
+            services.AddScoped<CreateTransactionUseCase>();
+            services.AddScoped<AccountUseCase>();
+            services.AddScoped<CategoryUseCase>();
             return services;
         }
     }

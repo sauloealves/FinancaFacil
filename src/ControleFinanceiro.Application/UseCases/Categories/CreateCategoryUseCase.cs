@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleFinanceiro.Application.UseCases {
-    public class CategoryUseCase {
+namespace ControleFinanceiro.Application.UseCases.Categories {
+    public class CreateCategoryUseCase {
         private readonly ICategoryRepository _repository;
-        public CategoryUseCase(ICategoryRepository repository) {
+        public CreateCategoryUseCase(ICategoryRepository repository) {
             _repository = repository;
         }
-        public async Task AddAsync(Guid userId, string name, Guid? parentCategoryId) {
+        public async Task AddAsync(Guid userId, string name, Guid? parentCategoryId = null) {
             var category = new Category(userId, name, parentCategoryId);
             await _repository.AddAsync(category);
         }

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleFinanceiro.Application.UseCases {
+namespace ControleFinanceiro.Application.UseCases.Auth {
     public class ResetPasswordUseCase {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordResetTokenRepository _tokenRepository;

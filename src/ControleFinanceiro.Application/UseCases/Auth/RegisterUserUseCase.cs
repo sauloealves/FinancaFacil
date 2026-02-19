@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleFinanceiro.Application.UseCases {
+namespace ControleFinanceiro.Application.UseCases.Auth {
     public class RegisterUserUseCase {
 
         private readonly IUserRepository _userRepository;

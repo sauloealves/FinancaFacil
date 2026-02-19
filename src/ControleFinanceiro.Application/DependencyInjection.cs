@@ -1,4 +1,7 @@
-﻿using ControleFinanceiro.Application.UseCases;
+﻿using ControleFinanceiro.Application.UseCases.Accounts;
+using ControleFinanceiro.Application.UseCases.Auth;
+using ControleFinanceiro.Application.UseCases.Categories;
+using ControleFinanceiro.Application.UseCases.Transactions;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,8 +19,9 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<ForgotPasswordUseCase>();
             services.AddScoped<ResetPasswordUseCase>();
             services.AddScoped<CreateTransactionUseCase>();
-            services.AddScoped<AccountUseCase>();
-            services.AddScoped<CategoryUseCase>();
+            services.AddScoped<CreateAccountUseCase>();
+            services.AddScoped<GetAccountsUseCase>();
+            services.AddScoped<CreateCategoryUseCase>();
             return services;
         }
     }

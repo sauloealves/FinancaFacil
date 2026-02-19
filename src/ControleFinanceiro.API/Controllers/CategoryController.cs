@@ -1,5 +1,5 @@
 ﻿using ControleFinanceiro.Application.DTOs;
-using ControleFinanceiro.Application.UseCases;
+using ControleFinanceiro.Application.UseCases.Categories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +11,8 @@ namespace ControleFinanceiro.API.Controllers {
     [Authorize]
     public class CategoryController : ControllerBase {
 
-        private readonly CategoryUseCase _categoryUseCase;
-        public CategoryController(CategoryUseCase categoryUseCase) {
+        private readonly CreateCategoryUseCase _categoryUseCase;
+        public CategoryController(CreateCategoryUseCase categoryUseCase) {
             _categoryUseCase = categoryUseCase;
         }
 

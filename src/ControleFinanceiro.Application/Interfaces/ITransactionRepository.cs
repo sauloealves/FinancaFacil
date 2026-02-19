@@ -10,5 +10,6 @@ namespace ControleFinanceiro.Application.Interfaces {
     public interface ITransactionRepository {
         Task AddAsync(Transaction transaction);
         Task AddRangeAsync(List<Transaction> transactions);
+        Task<decimal> GetAccountBalanceAsync(Guid accountId, Guid userId, DateTime referenceDate);
     }
 }

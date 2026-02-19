@@ -1,5 +1,5 @@
 ﻿using ControleFinanceiro.Application.DTOs;
-using ControleFinanceiro.Application.UseCases;
+using ControleFinanceiro.Application.UseCases.Transactions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

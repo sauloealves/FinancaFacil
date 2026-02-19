@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleFinanceiro.Application.UseCases {
+namespace ControleFinanceiro.Application.UseCases.Transactions {
     public class CreateTransactionUseCase {
         private readonly ITransactionRepository _repository;
 

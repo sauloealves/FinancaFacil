@@ -11,29 +11,26 @@ using System.Threading.Tasks;
 namespace ControleFinanceiro.Application.UseCases.Accounts {
     public class GetAccountsUseCase {
 
-        private readonly IAccountRepository _repository;
-        private readonly ITransactionRepository _transactionRepository;
-        public GetAccountsUseCase(IAccountRepository accountRepository, ITransactionRepository transactionRepository) {
-            _repository = accountRepository;
-            _transactionRepository = transactionRepository;
+        private readonly IAccountRepository _repository;        
+        public GetAccountsUseCase(IAccountRepository accountRepository) {
+            _repository = accountRepository;            
         }
 
-        public async Task<IEnumerable<AccountResponseDTO>> GetByUserId(Guid userId) {
-
-            var accounts = await _repository.GetByUserIdAsync(userId);
+        public async Task<IEnumerable<AccountResponseDTO>> GetByUserIdAsync(Guid userId) {
 
             var result = new List<AccountResponseDTO>();
 
-            foreach(var account in accounts) {
-                var balance = await _transactionRepository.GetAccountBalanceAsync(account.Id, userId, DateTime.UtcNow);
+            var balance = await _repository.GetAccountWithBalanceAsync(userId, DateTime.UtcNow);                
 
-                result.Add(new AccountResponseDTO {
+            balance.ToList().ForEach(account => {
+                var accountResponse = new AccountResponseDTO {
                     Id = account.Id,
                     Name = account.Name,
                     InitialBalance = account.InitialBalance,
-                    CurrentBalance = account.InitialBalance + balance
-                });
-            }
+                    CurrentBalance = account.CurrentBalance
+                };
+                result.Add(accountResponse);
+            });
 
             return result.AsEnumerable();        
 

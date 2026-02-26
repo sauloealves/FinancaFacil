@@ -22,14 +22,15 @@ namespace ControleFinanceiro.API.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccountRequest request) {
-            await _createUseCase.AddAsync(request.UserId, request.Name, request.InitialBalance);
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            await _createUseCase.AddAsync(userId, request.Name, request.InitialBalance);
             return Ok();
         }
 
         [HttpGet]
         public async Task<IActionResult> Get() {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var accounts = await _getAccountUseCase.GetByUserId(userId);
+            var accounts = await _getAccountUseCase.GetByUserIdAsync(userId);
             return Ok(accounts);
         }
     }

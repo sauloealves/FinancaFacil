@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Domain.Entities;
+﻿using ControleFinanceiro.Application.DTOs;
+using ControleFinanceiro.Domain.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,7 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task<IEnumerable<Account>> GetByUserIdAsync(Guid userId);
         
         Task UpdateAsync(Account account);
+
+        Task<IEnumerable<AccountResponseDTO>> GetAccountWithBalanceAsync(Guid userid, DateTime dateTimeReference);
     }
 }

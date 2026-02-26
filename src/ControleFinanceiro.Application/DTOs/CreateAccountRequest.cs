@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace ControleFinanceiro.Application.DTOs {
     public class CreateAccountRequest {
-
-        public Guid UserId { get; set; }
         public string Name { get; set; } = String.Empty;
         public decimal InitialBalance { get; set; }
     }

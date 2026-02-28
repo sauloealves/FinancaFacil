@@ -10,16 +10,21 @@ namespace ControleFinanceiro.Domain.Entities {
         public Guid UserId { get; private set; }
         public string Name { get; private set; } = string.Empty;
         public decimal InitialBalance { get; private set; }
-        public bool IsDeleted { get; private set; }
+        public bool IsDeleted { get; set; }
 
         private Account() { }
 
         public Account(Guid userId, string name, decimal initialBalance) {
             Id = Guid.NewGuid();
             UserId = userId;
-            Name = name;
+            Name = name ?? throw new ArgumentException("Name is required.");
             InitialBalance = initialBalance;
             IsDeleted = false;
+        }
+
+        public void Update(string name, decimal initialBalance) {
+            Name = name ?? throw new ArgumentException("Name is required.");
+            InitialBalance = initialBalance;
         }
     }
 }

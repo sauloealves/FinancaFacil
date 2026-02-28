@@ -22,6 +22,8 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<CreateAccountUseCase>();
             services.AddScoped<GetAccountsUseCase>();
             services.AddScoped<CreateCategoryUseCase>();
+            services.AddScoped<DeleteAccountUseCase>();
+            services.AddScoped<UpdateAccountUseCase>();
             return services;
         }
     }

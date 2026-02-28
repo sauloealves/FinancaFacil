@@ -25,7 +25,9 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
         }
 
         public Task DeleteAsync(Account account) {
-            throw new NotImplementedException();
+            account.IsDeleted = true;
+            _context.Accounts.Update(account);
+            return _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<AccountResponseDTO>> GetAccountWithBalanceAsync(Guid userId, DateTime dateTimeReference) {

@@ -35,5 +35,13 @@ namespace ControleFinanceiro.Application.UseCases.Accounts {
             return result.AsEnumerable();        
 
         }
+
+        public async Task DeleteAsync(Guid accountId, Guid userId) {
+            var account = await _repository.GetByIdAsync(accountId, userId);
+            if (account == null) {
+                throw new Exception("Account not found");
+            }
+            await _repository.DeleteAsync(account);
+        }
     }
 }

@@ -1,14 +1,9 @@
 ﻿using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Domain.Entities;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ControleFinanceiro.Application.UseCases.Accounts {
     public class CreateAccountUseCase {
+
 
         private readonly IAccountRepository _repository;
 

@@ -1,0 +1,26 @@
+services:
+  controlefinanceiro.api:
+    image: ${DOCKER_REGISTRY-}controlefinanceiroapi
+    build:
+      context: .
+      dockerfile: src/ControleFinanceiro.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      container_name: financafacil-api
+      ConnectionStrings__DefaultConnection: ${DB_CONNECTION}
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: "ControleFinanceiro"
+      Jwt__Audience: "ControleFinanceiroUsers"
+      Jwt__ExpirationMinutes: "120"
+
+      Smtp__Host: ${SMTP_HOST}
+      Smtp__Port: ${SMTP_PORT}
+      Smtp__Username: ${SMTP_USER}
+      Smtp__Password: ${SMTP_PASS}
+      Smtp__From: ${SMTP_FROM}
+
+      OpenAI__ApiKey: ${OPENAI_KEY}
+      OpenAI__Model: ${OPENAI_MODEL}
+    ports:
+      - "8080:8080"
+    

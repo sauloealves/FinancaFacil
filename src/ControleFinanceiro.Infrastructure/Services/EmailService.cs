@@ -1,6 +1,8 @@
 ﻿using ControleFinanceiro.Application.Interfaces;
+using ControleFinanceiro.Domain.Entities;
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -13,30 +15,46 @@ using System.Threading.Tasks;
 namespace ControleFinanceiro.Infrastructure.Services {
     public class EmailService :IEmailService {
         private readonly IConfiguration _configuration;
-        public EmailService(IConfiguration configuration) {
+        private readonly ILogger<EmailService> _logger;
+
+        public EmailService(IConfiguration configuration, ILogger<EmailService> logger) {
             _configuration = configuration;
+            _logger = logger;
         }
         public async Task SendAsync(string to, string subject, string body) {
-            var smtp = _configuration.GetSection("Smtp");
+            try {
+                var smtp = _configuration.GetSection("Smtp");
 
-            var client = new SmtpClient(smtp["Host"], int.Parse(smtp["Port"]!)) {
-                Credentials = new NetworkCredential(
-                    smtp["Username"],
-                    smtp["Password"]
-                ),
-                EnableSsl = true
-            };
+                var client = new SmtpClient(smtp["Host"], int.Parse(smtp["Port"]!)) {
+                    Credentials = new NetworkCredential(
+                        smtp["Username"],
+                        smtp["Password"]
+                    ),
+                    EnableSsl = true
+                };
 
-            var mail = new MailMessage {
-                From = new MailAddress(smtp["From"]!),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
+                _logger.LogInformation("SMTP Host: {Host}", smtp["Host"]);
+                _logger.LogInformation("SMTP Port: {Port}", smtp["Port"]);
+                _logger.LogInformation("SMTP Username: {User}", smtp["Username"]);
+                _logger.LogInformation("SMTP From: {From}", smtp["From"]);
 
-            mail.To.Add(to);
+                var mail = new MailMessage {
+                    From = new MailAddress(smtp["From"]!),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
 
-            await client.SendMailAsync(mail);
+                mail.To.Add(to);
+                _logger.LogInformation("Email enviado para {To}", to);
+
+                await client.SendMailAsync(mail);
+
+            } catch(Exception ex) {
+
+                _logger.LogError(ex, "Erro ao enviar email");
+                throw;
+            }
         }
     }
 }

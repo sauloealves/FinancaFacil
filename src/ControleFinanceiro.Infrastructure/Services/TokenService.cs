@@ -31,7 +31,7 @@ namespace ControleFinanceiro.Infrastructure.Services {
                 key, SecurityAlgorithms.HmacSha256
             );
 
-            expiration = DateTime.UtcNow.AddMinutes(
+            expiration = DateTime.Now.AddDays(
                 int.Parse(jwtSettings["ExpirationMinutes"]!)
             );
 

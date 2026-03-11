@@ -11,7 +11,7 @@ services:
       Jwt__Key: ${JWT_KEY}
       Jwt__Issuer: "ControleFinanceiro"
       Jwt__Audience: "ControleFinanceiroUsers"
-      Jwt__ExpirationMinutes: "120"
+      Jwt__ExpirationMinutes: "1"
 
       Smtp__Host: ${SMTP_HOST}
       Smtp__Port: ${SMTP_PORT}
@@ -21,6 +21,8 @@ services:
 
       OpenAI__ApiKey: ${OPENAI_KEY}
       OpenAI__Model: ${OPENAI_MODEL}
+
+      Account__UrlResetSenha: ${URL_RESET_SENHA}
     ports:
       - "8080:8080"
     

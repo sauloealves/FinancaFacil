@@ -26,9 +26,9 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
         public async Task<PasswordResetToken?> GetValidAsync(string token) {
             return await _context.Set<PasswordResetToken>()
                 .FirstOrDefaultAsync(t =>
-                    t.Token == token &&
+                    t.Token == token.Replace(" ","+") &&
                     !t.Used &&
-                    t.ExpiresAt > DateTime.UtcNow);
+                    t.ExpiresAt > DateTime.Now);
         }
 
         public async Task UpdateAsync(PasswordResetToken token) {

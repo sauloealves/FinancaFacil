@@ -41,7 +41,7 @@ namespace ControleFinanceiro.Tests.Application.Accounts {
                 r.GetBalanceAsync(
                     accountId,
                     userId,
-                    It.Is<DateTime>(d => d <= DateTime.UtcNow)),
+                    It.Is<DateTime>(d => d <= DateTime.Now)),
                 Times.Once);
         }
 

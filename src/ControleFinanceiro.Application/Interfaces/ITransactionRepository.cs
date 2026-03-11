@@ -22,6 +22,7 @@ namespace ControleFinanceiro.Application.Interfaces {
 
         Task<decimal> GetAccountBalanceAsync(Guid userId, Guid accountId);
 
-        Task<decimal> GetIncomeByMonth(Guid userId, int month, int year);
+        Task<decimal> GetIncomeByMonth(Guid userId, int month, int year);              
+
     }
 }

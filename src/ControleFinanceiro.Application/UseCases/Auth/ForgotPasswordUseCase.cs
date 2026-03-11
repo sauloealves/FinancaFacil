@@ -2,6 +2,8 @@
 using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Domain.Entities;
 
+using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +15,18 @@ namespace ControleFinanceiro.Application.UseCases.Auth {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordResetTokenRepository _tokenRepository;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public ForgotPasswordUseCase(
             IUserRepository userRepository,
             IPasswordResetTokenRepository tokenRepository,
-            IEmailService emailService) {
+            IEmailService emailService,
+            IConfiguration configuration
+            ) {
             _userRepository = userRepository;
             _tokenRepository = tokenRepository;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         public async Task ExecuteAsync(ForgotPasswordRequest request) {
@@ -33,11 +39,11 @@ namespace ControleFinanceiro.Application.UseCases.Auth {
             var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
             var reset = new PasswordResetToken(
-                user.Id, token, DateTime.UtcNow.AddHours(1));
+                user.Id, token, DateTime.Now.AddDays(1));
 
             await _tokenRepository.AddAsync(reset);
 
-            var link = $"https://seusite/reset-password?token={token}";
+            var link = $"{_configuration["Account:UrlResetSenha"]}/reset-password?token={token}";
 
             await _emailService.SendAsync(
                 user.Email.Value,

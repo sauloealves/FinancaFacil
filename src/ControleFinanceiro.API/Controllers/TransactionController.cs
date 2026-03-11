@@ -1,6 +1,7 @@
 ﻿using ControleFinanceiro.Application.DTOs.Account;
 using ControleFinanceiro.Application.DTOs.Transaction;
 using ControleFinanceiro.Application.UseCases.Transactions;
+using ControleFinanceiro.Domain.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,13 @@ namespace ControleFinanceiro.API.Controllers {
         private readonly CreateTransactionUseCase _createUseCase;
         private readonly GetTransactionsUseCase _getUseCase;
         private readonly GetBalanceUseCase _getBalanceUseCase;
+        private readonly DeleteTransactionUseCase _deleteUseCase;
 
-        public TransactionsController(CreateTransactionUseCase createUseCase,GetTransactionsUseCase getTransactionsUseCase, GetBalanceUseCase getBalanceUseCase ) {
+        public TransactionsController(CreateTransactionUseCase createUseCase,GetTransactionsUseCase getTransactionsUseCase, GetBalanceUseCase getBalanceUseCase, DeleteTransactionUseCase deleteTransactionUseCase ) {
             _createUseCase = createUseCase;
             _getUseCase = getTransactionsUseCase;
             _getBalanceUseCase = getBalanceUseCase;
+            _deleteUseCase = deleteTransactionUseCase;
         }
 
         [HttpPost]
@@ -46,13 +49,21 @@ namespace ControleFinanceiro.API.Controllers {
             return Ok(result);
         }
 
-        [HttpPut("{transactionId}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid transactionId, UpdateTransactionRequest request) {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var updateUseCase = HttpContext.RequestServices.GetService<UpdateTransactionUseCase>();
             await updateUseCase.ExecuteAsync(transactionId, userId,request);
             return Ok();
 
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id, [FromQuery] DeleteScope scope ) {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            await _deleteUseCase.ExecuteAsync(id, userId, scope);
+            return Ok();
         }
     }
 }

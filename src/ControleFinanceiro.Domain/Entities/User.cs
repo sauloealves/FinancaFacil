@@ -24,7 +24,7 @@ namespace ControleFinanceiro.Domain.Entities {
             Email = email ?? throw new ArgumentException("E-mail é obrigatório.");
             PasswordHash = passwordHash ?? throw new ArgumentException("Senha é obrigatória.");
             Active = true;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
 
         public void Deactivate() {

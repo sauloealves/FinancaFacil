@@ -28,7 +28,7 @@ builder.Services.AddApplication();
 
 // CORS (temporário para desenvolvimento)
 builder.Services.AddCors(options => {
-    options.AddPolicy("AllowFrontend",
+    options.AddPolicy("AllowAll",
         policy => policy
             .AllowAnyOrigin()
             .AllowAnyMethod()
@@ -62,7 +62,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseForwardedHeaders();
-app.UseCors("AllowFrontend");
+app.UseCors("AllowAll");
 
 if(!app.Environment.IsDevelopment()) {
     app.UseHttpsRedirection();

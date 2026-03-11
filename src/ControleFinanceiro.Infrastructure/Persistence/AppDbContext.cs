@@ -20,6 +20,16 @@ namespace ControleFinanceiro.Infrastructure.Persistence {
             : base(options) {
         }
 
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+            configurationBuilder
+                .Properties<DateTime>()
+                .HaveColumnType("timestamp without time zone");
+
+            configurationBuilder
+                .Properties<DateTime?>()
+                .HaveColumnType("timestamp without time zone");
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             base.OnModelCreating(modelBuilder);

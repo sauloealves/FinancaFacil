@@ -13,5 +13,6 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task UpdateAsync(Category category, Guid userId);
         void DeleteAsync(Guid categoryId, Guid userId); 
         Task<List<Category>> GetAllByUserIdAsync(Guid userId);
+        Task AddRangeAsync(List<Category> categories);
     }
 }

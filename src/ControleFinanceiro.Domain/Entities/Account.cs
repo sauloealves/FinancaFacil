@@ -12,7 +12,7 @@ namespace ControleFinanceiro.Domain.Entities {
         public decimal InitialBalance { get; private set; }
         public bool IsDeleted { get; set; }
 
-        private Account() { }
+        public Account() { }
 
         public Account(Guid userId, string name, decimal initialBalance) {
             Id = Guid.NewGuid();

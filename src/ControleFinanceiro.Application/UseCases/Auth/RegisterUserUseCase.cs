@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Application.DTOs.Auth;
+﻿using ControleFinanceiro.Application.Constants;
+using ControleFinanceiro.Application.DTOs.Auth;
 using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Domain.Entities;
 using ControleFinanceiro.Domain.ValueObjetcs;
@@ -14,12 +15,18 @@ namespace ControleFinanceiro.Application.UseCases.Auth {
 
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IAccountRepository _accountRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
         public RegisterUserUseCase(
             IUserRepository userRepository,
-            IPasswordHasher passwordHasher) {
+            IPasswordHasher passwordHasher,
+            ICategoryRepository categoryRepository,
+            IAccountRepository accountRepository) {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _categoryRepository = categoryRepository;
+            _accountRepository = accountRepository;
         }
         public async Task<RegisterUserResponse> ExecuteAsync(RegisterUserRequest request) {
             // Validação básica
@@ -46,6 +53,18 @@ namespace ControleFinanceiro.Application.UseCases.Auth {
             );
 
             await _userRepository.AddAsync(user);
+
+            var accounts = DefaultData.Accounts
+                .Select(name => new Account(user.Id, name, 0))
+                .ToList();
+
+            await _accountRepository.AddRangeAsync(accounts);
+
+                var categories = DefaultData.Categories
+                    .Select(name => new Category(user.Id, name))
+                    .ToList();
+
+            await _categoryRepository.AddRangeAsync(categories);
 
             return new RegisterUserResponse {
                 UserId = user.Id,

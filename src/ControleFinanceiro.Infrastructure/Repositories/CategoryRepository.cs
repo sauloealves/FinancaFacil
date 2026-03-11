@@ -48,5 +48,10 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
         public async Task<List<Category>> GetAllByUserIdAsync(Guid userId) {
             return await Task.Run(() => _context.Categories.Where(c => c.UserId == userId && !c.IsDeleted).ToList());
         }
+
+        public Task AddRangeAsync(List<Category> categories) {
+            _context.Categories.AddRange(categories);
+            return _context.SaveChangesAsync();
+        }
     }
 }

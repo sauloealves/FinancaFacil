@@ -24,6 +24,11 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddRangeAsync(List<Account> accounts) {
+            await _context.Accounts.AddRangeAsync(accounts);
+            await _context.SaveChangesAsync();
+        }
+
         public Task DeleteAsync(Account account) {
             account.IsDeleted = true;
             _context.Accounts.Update(account);

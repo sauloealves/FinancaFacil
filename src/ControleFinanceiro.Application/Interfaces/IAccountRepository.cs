@@ -16,5 +16,7 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task<IEnumerable<AccountResponseDTO>> GetAccountWithBalanceAsync(Guid userid, DateTime dateTimeReference);
 
         Task<decimal> GetSumInitialBalanceAsync(Guid userId);
+
+        Task AddRangeAsync(List<Account> accounts);
     }
 }

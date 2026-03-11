@@ -48,7 +48,11 @@ namespace ControleFinanceiro.API.Controllers {
         [AllowAnonymous]
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request) {
-            await _forgotPasswordUseCase.ExecuteAsync(request);
+            try{
+                await _forgotPasswordUseCase.ExecuteAsync(request);
+            } catch(Exception ex) {
+                return BadRequest(new { message = ex.Message });
+            }
             return Ok();
         }
 

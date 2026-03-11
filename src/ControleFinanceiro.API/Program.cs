@@ -58,11 +58,11 @@ builder.Services.AddAuthentication(options => {
 
 var app = builder.Build();
 
-
+app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseForwardedHeaders();
-app.UseCors("AllowAll");
+
 
 if(!app.Environment.IsDevelopment()) {
     app.UseHttpsRedirection();

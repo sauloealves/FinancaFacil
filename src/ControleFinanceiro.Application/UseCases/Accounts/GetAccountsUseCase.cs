@@ -20,7 +20,7 @@ namespace ControleFinanceiro.Application.UseCases.Accounts {
 
             var result = new List<AccountResponseDTO>();
 
-            var balance = await _repository.GetAccountWithBalanceAsync(userId, DateTime.UtcNow);                
+            var balance = await _repository.GetAccountWithBalanceAsync(userId, DateTime.Now);                
 
             balance.ToList().ForEach(account => {
                 var accountResponse = new AccountResponseDTO {

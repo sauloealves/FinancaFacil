@@ -22,6 +22,9 @@ services:
       OpenAI__ApiKey: ${OPENAI_KEY}
       OpenAI__Model: ${OPENAI_MODEL}
 
+      Resend__ApiKey: ${RESEND_API_KEY}
+      Resend__From: ${RESEND_EMAIL}
+
       Account__UrlResetSenha: ${URL_RESET_SENHA}
     ports:
       - "8080:8080"

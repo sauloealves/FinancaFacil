@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 using System.Text;
-
+using Resend;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen(options => {
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+
 // CORS (temporário para desenvolvimento)
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll",
@@ -40,10 +41,16 @@ builder.Services.AddCors(options => {
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
+builder.Services.AddHttpClient<IResend, ResendClient>();
+builder.Services.AddSingleton(new ResendClientOptions {
+    ApiToken = builder.Configuration["Resend:ApiKey"]
+});
+
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
 .AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters {
         ValidateIssuer = true,

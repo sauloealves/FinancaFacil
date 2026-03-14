@@ -62,11 +62,13 @@ namespace ControleFinanceiro.Domain.Entities {
         string description,
         decimal amount,
         Guid? categoryId,
-        DateTime date) {
+        DateTime date,
+        Guid accountId) {
                 Description = description;
                 Amount = amount;
                 CategoryId = categoryId;
                 Date = date;
+                AccountId = accountId;
         }
 
     }

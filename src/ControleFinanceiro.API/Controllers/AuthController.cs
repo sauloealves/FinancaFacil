@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Application.DTOs.Auth;
+﻿using ControleFinanceiro.Application.Common;
+using ControleFinanceiro.Application.DTOs.Auth;
 using ControleFinanceiro.Application.UseCases.Auth;
 
 using Microsoft.AspNetCore.Authorization;
@@ -39,9 +40,9 @@ namespace ControleFinanceiro.API.Controllers {
         public async Task<IActionResult> Login([FromBody] LoginRequest request) {
             try {
                 var result = await _loginUserUseCase.ExecuteAsync(request);
-                return Ok(result);
+                return Ok(ApiResponse<LoginResponse>.Ok(result));
             } catch(InvalidOperationException ex) {
-                return Unauthorized(new { message = ex.Message });
+                return Unauthorized(ApiResponse.Fail(ex.Message));
             }
         }
 
@@ -51,21 +52,21 @@ namespace ControleFinanceiro.API.Controllers {
             try{
                 await _forgotPasswordUseCase.ExecuteAsync(request);
             } catch(Exception ex) {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ApiResponse.Fail(ex.Message));
             }
-            return Ok();
+            return Ok(ApiResponse.Ok());
         }
 
         [AllowAnonymous]
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequest request) {
             await _resetPasswordUseCase.ExecuteAsync(request);
-            return Ok();
+            return Ok(ApiResponse.Ok());
         }
 
         [HttpPost("teste")]        
         public async Task<IActionResult> Teste() {
-            return Ok("Autenticado com sucesso!");
+            return Ok(ApiResponse<string>.Ok("Autenticado com sucesso!"));
         }
     }
 }

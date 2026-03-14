@@ -2,6 +2,8 @@
 using ControleFinanceiro.Domain.Entities;
 using ControleFinanceiro.Infrastructure.Persistence;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +54,14 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
         public Task AddRangeAsync(List<Category> categories) {
             _context.Categories.AddRange(categories);
             return _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasTransactions(Guid categoryId, Guid userId) {
+            return await _context.Transactions
+                .AnyAsync(t =>
+                    t.UserId == userId &&
+                    t.CategoryId == categoryId &&
+                    !t.IsDeleted);
         }
     }
 }

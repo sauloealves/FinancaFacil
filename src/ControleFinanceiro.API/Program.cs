@@ -1,3 +1,4 @@
+using ControleFinanceiro.API.Middlewares;
 using ControleFinanceiro.Application;
 using ControleFinanceiro.Infrastructure;
 using ControleFinanceiro.Infrastructure.Repositories;
@@ -5,8 +6,9 @@ using ControleFinanceiro.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-using System.Text;
 using Resend;
+
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -66,6 +68,7 @@ builder.Services.AddAuthentication(options => {
 var app = builder.Build();
 
 app.UseCors("AllowAll");
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseForwardedHeaders();

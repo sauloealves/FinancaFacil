@@ -14,5 +14,6 @@ namespace ControleFinanceiro.Application.Interfaces {
         void DeleteAsync(Guid categoryId, Guid userId); 
         Task<List<Category>> GetAllByUserIdAsync(Guid userId);
         Task AddRangeAsync(List<Category> categories);
+        Task<bool> HasTransactions(Guid categoryId, Guid userId);
     }
 }

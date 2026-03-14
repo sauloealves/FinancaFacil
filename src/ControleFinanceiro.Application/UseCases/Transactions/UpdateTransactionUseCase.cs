@@ -1,6 +1,7 @@
 ﻿using ControleFinanceiro.Application.DTOs.Transaction;
 using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Domain.Entities;
+using ControleFinanceiro.Domain.Enums;
 
 using System;
 using System.Collections.Generic;
@@ -58,9 +59,19 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
             UpdateTransactionRequest request,
             bool structuralChange) {
             if(structuralChange) {
-                existing.Delete();
-                await _repository.SaveChangesAsync();
 
+                if (existing.OccurrenceGroupId != null) {
+                    var group = await _repository.GetByGroupAsync(existing.OccurrenceGroupId.Value,userId);
+                    if (group.Count == 2 && group.Any(t => t.Type == TransactionType.Income) &&
+                        group.Any(t => t.Type == TransactionType.Expense) &&
+                        group.All(t => t.CategoryId == null)) {
+                        foreach(var t in group)
+                            t.Delete();                                                
+                    }
+                } else { 
+                    existing.Delete();                    
+                }
+                await _repository.SaveChangesAsync();
                 await _createUseCase.AddAsync(userId, MapToCreate(request));
                 return;
             }
@@ -69,7 +80,8 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                 request.Description,
                 request.Value,
                 request.CategoryId,
-                request.StartDate
+                request.StartDate,
+                request.AccountId
             );
 
             await _repository.SaveChangesAsync();

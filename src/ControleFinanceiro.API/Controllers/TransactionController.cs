@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Application.DTOs.Account;
+﻿using ControleFinanceiro.Application.Common;
+using ControleFinanceiro.Application.DTOs.Account;
 using ControleFinanceiro.Application.DTOs.Transaction;
 using ControleFinanceiro.Application.UseCases.Transactions;
 using ControleFinanceiro.Domain.Enums;
@@ -18,19 +19,21 @@ namespace ControleFinanceiro.API.Controllers {
         private readonly GetTransactionsUseCase _getUseCase;
         private readonly GetBalanceUseCase _getBalanceUseCase;
         private readonly DeleteTransactionUseCase _deleteUseCase;
+        private readonly UpdateTransactionUseCase _updateUseCase;
 
-        public TransactionsController(CreateTransactionUseCase createUseCase,GetTransactionsUseCase getTransactionsUseCase, GetBalanceUseCase getBalanceUseCase, DeleteTransactionUseCase deleteTransactionUseCase ) {
+        public TransactionsController(CreateTransactionUseCase createUseCase,GetTransactionsUseCase getTransactionsUseCase, GetBalanceUseCase getBalanceUseCase, DeleteTransactionUseCase deleteTransactionUseCase, UpdateTransactionUseCase updateTransactionUseCase) {
             _createUseCase = createUseCase;
             _getUseCase = getTransactionsUseCase;
             _getBalanceUseCase = getBalanceUseCase;
             _deleteUseCase = deleteTransactionUseCase;
+            _updateUseCase = updateTransactionUseCase;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateTransactionRequest request) {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             await _createUseCase.AddAsync(userId, request);
-            return Ok();
+            return Ok(ApiResponse.Ok());
         }
 
         [HttpGet]
@@ -39,22 +42,21 @@ namespace ControleFinanceiro.API.Controllers {
 
             var result = await _getUseCase.ExecuteAsync(userId, filter);
 
-            return Ok(result);
+            return Ok(ApiResponse<List<TransactionResponse>>.Ok(result));
         }
 
         [HttpGet("GetBalance")]
         public async Task<IActionResult> GetBalance([FromQuery] GetBalanceRequest request) {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = await _getBalanceUseCase.ExecuteAsync(userId, request);
-            return Ok(result);
+            return Ok(ApiResponse<BalanceResponse>.Ok(result));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{transactionId}")]
         public async Task<IActionResult> Update(Guid transactionId, UpdateTransactionRequest request) {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var updateUseCase = HttpContext.RequestServices.GetService<UpdateTransactionUseCase>();
-            await updateUseCase.ExecuteAsync(transactionId, userId,request);
-            return Ok();
+            await _updateUseCase.ExecuteAsync(transactionId, userId, request);
+            return Ok(ApiResponse.Ok());
 
         }
 
@@ -63,7 +65,7 @@ namespace ControleFinanceiro.API.Controllers {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             await _deleteUseCase.ExecuteAsync(id, userId, scope);
-            return Ok();
+            return Ok(ApiResponse.Ok());
         }
     }
 }

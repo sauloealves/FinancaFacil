@@ -85,5 +85,13 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
             _context.Accounts.Update(account);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> HasTransactions(Guid accountId, Guid userId) {
+            return await _context.Transactions
+                .AnyAsync(t =>
+                    t.UserId == userId &&
+                    t.AccountId == accountId &&
+                    !t.IsDeleted);
+        }
     }
 }

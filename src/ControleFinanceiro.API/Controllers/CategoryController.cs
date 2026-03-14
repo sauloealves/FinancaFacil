@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Application.DTOs.Category;
+﻿using ControleFinanceiro.Application.Common;
+using ControleFinanceiro.Application.DTOs.Category;
 using ControleFinanceiro.Application.UseCases.Categories;
 
 using Microsoft.AspNetCore.Authorization;
@@ -12,16 +13,22 @@ namespace ControleFinanceiro.API.Controllers {
     public class CategoryController : ControllerBase {
 
         private readonly CreateCategoryUseCase _categoryUseCase;
-        public CategoryController(CreateCategoryUseCase categoryUseCase) {
+        private readonly GetCategoriesUseCase _getCategoriesUseCase;
+        private readonly UpdateCategoryUseCase _updateCategoryUseCase;
+        private readonly DeleteCategoryUseCase _deleteCategoryUseCase;
+
+        public CategoryController(CreateCategoryUseCase categoryUseCase, GetCategoriesUseCase getCategoriesUseCase, UpdateCategoryUseCase updateCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase) {
             _categoryUseCase = categoryUseCase;
+            _getCategoriesUseCase = getCategoriesUseCase;
+            _updateCategoryUseCase = updateCategoryUseCase;
+            _deleteCategoryUseCase = deleteCategoryUseCase;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get() {
             var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-            var getUseCase = HttpContext.RequestServices.GetService<GetCategoriesUseCase>();
-            var categories = await getUseCase.GetAllByUserIdAsync(userId);
-            return Ok(categories);
+            var categories = await _getCategoriesUseCase.GetAllByUserIdAsync(userId);
+            return Ok(ApiResponse<IEnumerable<CategoryResponseDTO>>.Ok(categories));
         }
 
         [HttpPost]
@@ -29,25 +36,22 @@ namespace ControleFinanceiro.API.Controllers {
             var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
 
             await _categoryUseCase.AddAsync(userId,request.Name, request.ParentId);
-            return Ok();
+            return Ok(ApiResponse.Ok());
         }
 
         [HttpPut("{categoryId}")]
         public async Task<IActionResult> Update(Guid categoryId, UpdateCategoryRequest request) {
             var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-
-            var updateUseCase = HttpContext.RequestServices.GetService<UpdateCategoryUseCase>();
-            await updateUseCase.UpdateAsync(categoryId,userId, request.Name, request.ParentId);
-            return Ok();
+            await _updateCategoryUseCase.UpdateAsync(categoryId, userId, request.Name, request.ParentId);
+            return Ok(ApiResponse.Ok());
         }
 
         [HttpDelete("{categoryID}")]
         public async Task<IActionResult> Delete(Guid categoryId) {
             var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
 
-            var deleteUseCase = HttpContext.RequestServices.GetService<DeleteCategoryUseCase>();
-            await deleteUseCase.DeleteAsync(categoryId, userId);
-            return Ok();
+            await _deleteCategoryUseCase.DeleteAsync(categoryId, userId);
+            return Ok(ApiResponse.Ok());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using ControleFinanceiro.Application.DTOs.Account;
+﻿using ControleFinanceiro.Application.Common;
+using ControleFinanceiro.Application.DTOs.Account;
+using ControleFinanceiro.Application.DTOs.Transaction;
 using ControleFinanceiro.Application.UseCases.Accounts;
 
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +19,13 @@ namespace ControleFinanceiro.API.Controllers
 
         private readonly CreateAccountUseCase _createUseCase;
         private readonly GetAccountsUseCase _getAccountUseCase;
-        public AccountController(CreateAccountUseCase createUseCase, GetAccountsUseCase getAccountUseCase)
-        {
+        private readonly DeleteAccountUseCase _deleteAccountUseCase;
+        private readonly UpdateAccountUseCase _updateAccountUseCase;
+        public AccountController(CreateAccountUseCase createUseCase, GetAccountsUseCase getAccountUseCase, DeleteAccountUseCase deleteAccountUseCase, UpdateAccountUseCase updateAccountUseCase ) {
             _createUseCase = createUseCase;
             _getAccountUseCase = getAccountUseCase;
+            _deleteAccountUseCase = deleteAccountUseCase;
+            _updateAccountUseCase = updateAccountUseCase;
         }
 
         [HttpPost]
@@ -28,7 +33,7 @@ namespace ControleFinanceiro.API.Controllers
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             await _createUseCase.AddAsync(userId, request.Name, request.InitialBalance);
-            return Ok();
+            return Ok(ApiResponse.Ok());
         }
 
         [HttpGet]
@@ -36,24 +41,24 @@ namespace ControleFinanceiro.API.Controllers
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var accounts = await _getAccountUseCase.GetByUserIdAsync(userId);
-            return Ok(accounts);
+            
+            return Ok(ApiResponse<IEnumerable<AccountResponseDTO>>.Ok(accounts));
         }
 
         [HttpDelete("{accountId}")]
         public async Task<IActionResult> Delete(Guid accountId)
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            await _getAccountUseCase.DeleteAsync(accountId, userId);
-            return Ok();
+            await _deleteAccountUseCase.DeleteAsync(accountId, userId);
+            return Ok(ApiResponse.Ok());
         }
 
         [HttpPut("{accountId}")]
         public async Task<IActionResult> Update(Guid accountId, UpdateAccountRequest request)
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var updateUseCase = HttpContext.RequestServices.GetService<UpdateAccountUseCase>();
-            await updateUseCase.UpdateAsync(accountId, userId, request.Name, request.InitialBalance);
-            return Ok();
+            await _updateAccountUseCase.UpdateAsync(accountId, userId, request.Name, request.InitialBalance);
+            return Ok(ApiResponse.Ok());
         }
     }
 }

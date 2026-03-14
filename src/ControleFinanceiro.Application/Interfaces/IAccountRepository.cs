@@ -18,5 +18,7 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task<decimal> GetSumInitialBalanceAsync(Guid userId);
 
         Task AddRangeAsync(List<Account> accounts);
+
+        Task<bool> HasTransactions(Guid accountId, Guid userId);
     }
 }

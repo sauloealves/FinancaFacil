@@ -1,4 +1,5 @@
 ﻿using ControleFinanceiro.Application.AI;
+using ControleFinanceiro.Application.Common;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace ControleFinanceiro.API.Controllers {
             var intent = await _intentService.ParseIntent(query);
             var result = await _queryService.Execute(userId, intent);
             var response = await _intentService.AIResult(query,result);
-            return Ok(new { response });
+            return Ok(ApiResponse<string>.Ok(response));
         }
     }
 }

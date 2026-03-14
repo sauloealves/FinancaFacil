@@ -7,7 +7,7 @@ namespace ControleFinanceiro.Application.DTOs.Transaction {
         public string Description { get; set; } = null!;
         public decimal Value { get; set; }
         public Guid? CategoryId { get; set; }
-        public Guid? AccountId { get; set; }
+        public Guid AccountId { get; set; }
         public DateTime StartDate { get; set; }
         public OccurrenceType OccurrenceType { get; set; }
         public int? InstallmentFrom { get; set; }

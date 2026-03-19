@@ -34,6 +34,7 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<AiIntentService>();
             services.AddScoped<FinancialQueryService>();
             services.AddScoped<DeleteTransactionUseCase>();
+            services.AddScoped<CreateBatchTransactionUseCase>();
             return services;
         }
     }

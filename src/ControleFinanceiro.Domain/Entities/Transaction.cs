@@ -25,7 +25,9 @@ namespace ControleFinanceiro.Domain.Entities {
 
         public bool IsDeleted { get; private set; }
 
-        private Transaction() { }
+        private Transaction(Guid userId) {
+            UserId = userId;
+        }
 
         public Transaction(
             Guid userId,
@@ -70,6 +72,5 @@ namespace ControleFinanceiro.Domain.Entities {
                 Date = date;
                 AccountId = accountId;
         }
-
     }
 }

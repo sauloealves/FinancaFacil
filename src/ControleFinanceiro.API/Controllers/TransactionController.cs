@@ -20,19 +20,28 @@ namespace ControleFinanceiro.API.Controllers {
         private readonly GetBalanceUseCase _getBalanceUseCase;
         private readonly DeleteTransactionUseCase _deleteUseCase;
         private readonly UpdateTransactionUseCase _updateUseCase;
+        private readonly CreateBatchTransactionUseCase _createBatchUseCase;
 
-        public TransactionsController(CreateTransactionUseCase createUseCase,GetTransactionsUseCase getTransactionsUseCase, GetBalanceUseCase getBalanceUseCase, DeleteTransactionUseCase deleteTransactionUseCase, UpdateTransactionUseCase updateTransactionUseCase) {
+        public TransactionsController(CreateTransactionUseCase createUseCase,GetTransactionsUseCase getTransactionsUseCase, GetBalanceUseCase getBalanceUseCase, DeleteTransactionUseCase deleteTransactionUseCase, UpdateTransactionUseCase updateTransactionUseCase, CreateBatchTransactionUseCase createBatchUseCase) {
             _createUseCase = createUseCase;
             _getUseCase = getTransactionsUseCase;
             _getBalanceUseCase = getBalanceUseCase;
             _deleteUseCase = deleteTransactionUseCase;
             _updateUseCase = updateTransactionUseCase;
+            _createBatchUseCase = createBatchUseCase;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateTransactionRequest request) {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             await _createUseCase.AddAsync(userId, request);
+            return Ok(ApiResponse.Ok());
+        }
+
+        [HttpPost("batch")]
+        public async Task<IActionResult> CreateBatch(List<CreateTransactionRequest> requests) {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);            
+            await _createBatchUseCase.ExecuteAsync(userId, requests);
             return Ok(ApiResponse.Ok());
         }
 

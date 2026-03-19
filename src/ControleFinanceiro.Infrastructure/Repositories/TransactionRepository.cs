@@ -24,6 +24,11 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddBatchAsync(Guid userId, List<Transaction> transactions) {                 
+            await _context.Transactions.AddRangeAsync(transactions);
+            _context.SaveChanges();
+        }
+
         public async Task AddRangeAsync(List<Transaction> transactions) {
             await _context.Transactions.AddRangeAsync(transactions);
             await _context.SaveChangesAsync();

@@ -33,9 +33,15 @@ namespace ControleFinanceiro.API.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateTransactionRequest request) {
-            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            await _createUseCase.AddAsync(userId, request);
-            return Ok(ApiResponse.Ok());
+            try {
+                Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                await _createUseCase.AddAsync(userId, request);
+                return Ok(ApiResponse.Ok());
+            } catch(Exception ex) {
+
+                return BadRequest(ApiResponse.Fail($"Ocorreu um erro ao criar a transação. {ex.Message}"));
+            }
+            
         }
 
         [HttpPost("batch")]
@@ -63,9 +69,15 @@ namespace ControleFinanceiro.API.Controllers {
 
         [HttpPut("{transactionId}")]
         public async Task<IActionResult> Update(Guid transactionId, UpdateTransactionRequest request) {
-            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            await _updateUseCase.ExecuteAsync(transactionId, userId, request);
-            return Ok(ApiResponse.Ok());
+            try {
+                Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                await _updateUseCase.ExecuteAsync(transactionId, userId, request);
+                return Ok(ApiResponse.Ok());
+            } catch(Exception ex) {
+
+                return BadRequest(ApiResponse.Fail($"Ocorreu um erro ao atualizar a transação. {ex.Message}"));
+            }
+            
 
         }
 

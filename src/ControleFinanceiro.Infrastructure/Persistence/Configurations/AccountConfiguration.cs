@@ -30,7 +30,7 @@ namespace ControleFinanceiro.Infrastructure.Persistence.Configurations {
             builder.Property(a => a.IsDeleted)
                 .IsRequired();
 
-            builder.HasIndex(a => new { a.UserId, a.Name });
+            builder.HasIndex(a => new { a.UserId, a.Name }).IsUnique().HasFilter("\"IsDeleted\" = false");
         }
     }
 }

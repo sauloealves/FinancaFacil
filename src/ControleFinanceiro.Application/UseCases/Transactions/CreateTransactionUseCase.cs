@@ -78,8 +78,11 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
             var groupId = Guid.NewGuid();
             var transactions = new List<Transaction>();
 
+            var contAddMonths = 0;
+
             for(int i = request.InstallmentFrom.Value; i <= request.InstallmentTo.Value; i++) {
-                var date = request.StartDate.AddMonths(i - 1);
+                var date = request.StartDate.AddMonths(contAddMonths);
+                contAddMonths++;
 
                 transactions.Add(new Transaction(
                     userId,
@@ -87,7 +90,7 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                     request.Value,
                     type,
                     date,
-                    $"{request.Description} ({i}/{request.InstallmentTo})",
+                    $"{request.Description} ({i-1}/{request.InstallmentTo})",
                     request.CategoryId,
                     OccurrenceType.Installment,
                     groupId,

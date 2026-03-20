@@ -27,7 +27,8 @@ namespace ControleFinanceiro.Application.UseCases.Accounts {
                     Id = account.Id,
                     Name = account.Name,
                     InitialBalance = account.InitialBalance,
-                    CurrentBalance = account.CurrentBalance
+                    CurrentBalance = account.CurrentBalance,
+                    IsEnabled = account.IsEnabled
                 };
                 result.Add(accountResponse);
             });

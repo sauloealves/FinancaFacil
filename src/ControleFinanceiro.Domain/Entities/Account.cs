@@ -12,6 +12,8 @@ namespace ControleFinanceiro.Domain.Entities {
         public decimal InitialBalance { get; private set; }
         public bool IsDeleted { get; set; }
 
+        public bool IsEnabled { get; set;}
+
         public Account() { }
 
         public Account(Guid userId, string name, decimal initialBalance) {
@@ -20,11 +22,13 @@ namespace ControleFinanceiro.Domain.Entities {
             Name = name ?? throw new ArgumentException("Name is required.");
             InitialBalance = initialBalance;
             IsDeleted = false;
+            IsEnabled = true;
         }
 
-        public void Update(string name, decimal initialBalance) {
+        public void Update(string name, decimal initialBalance, bool isEnabled) {
             Name = name ?? throw new ArgumentException("Name is required.");
             InitialBalance = initialBalance;
+            IsEnabled = isEnabled;
         }
     }
 }

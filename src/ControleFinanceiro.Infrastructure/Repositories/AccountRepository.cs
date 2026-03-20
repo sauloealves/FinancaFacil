@@ -48,7 +48,8 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
                         group tg by new {
                             account.Id,
                             account.Name,
-                            account.InitialBalance
+                            account.InitialBalance,
+                            account.IsEnabled,
                         }
         into g
                         select new AccountResponseDTO {
@@ -59,7 +60,8 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
                                 g.Sum(x =>
                                     x != null
                                         ? (x.Type == Domain.Enums.TransactionType.Income ? x.Amount : -x.Amount)
-                                        : 0)
+                                        : 0),
+                            IsEnabled = g.Key.IsEnabled
                         };
 
             return await query.OrderBy(e => e.Name).ToListAsync();

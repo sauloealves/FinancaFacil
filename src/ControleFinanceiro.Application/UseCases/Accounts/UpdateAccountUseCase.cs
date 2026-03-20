@@ -10,7 +10,7 @@ namespace ControleFinanceiro.Application.UseCases.Accounts {
             _repository = accountRepository;
         }
 
-        public async Task UpdateAsync(Guid accountId, Guid userId, string name, decimal initialBalance) {
+        public async Task UpdateAsync(Guid accountId, Guid userId, string name, decimal initialBalance, bool isEnabled) {
             
             var account = await _repository.GetByIdAsync(accountId, userId);
             
@@ -18,7 +18,7 @@ namespace ControleFinanceiro.Application.UseCases.Accounts {
                 throw new Exception("Account not found or access denied.");
             }
 
-            account.Update(name, initialBalance);
+            account.Update(name, initialBalance, isEnabled);
             await _repository.UpdateAsync(account);
         }
     }

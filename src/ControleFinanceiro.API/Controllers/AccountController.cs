@@ -57,7 +57,7 @@ namespace ControleFinanceiro.API.Controllers
         public async Task<IActionResult> Update(Guid accountId, UpdateAccountRequest request)
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            await _updateAccountUseCase.UpdateAsync(accountId, userId, request.Name, request.InitialBalance);
+            await _updateAccountUseCase.UpdateAsync(accountId, userId, request.Name, request.InitialBalance, request.IsEnabled);
             return Ok(ApiResponse.Ok());
         }
     }

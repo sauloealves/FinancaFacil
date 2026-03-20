@@ -10,5 +10,6 @@ namespace ControleFinanceiro.Application.DTOs.Account {
         public string Name { get; set; } = null!;
         public decimal InitialBalance { get; set; }
         public decimal CurrentBalance { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }

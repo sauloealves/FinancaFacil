@@ -25,6 +25,8 @@ namespace ControleFinanceiro.Domain.Entities {
 
         public bool IsDeleted { get; private set; }
 
+        public bool SendNotification { get; set; }
+
         private Transaction(Guid userId) {
             UserId = userId;
         }
@@ -54,6 +56,7 @@ namespace ControleFinanceiro.Domain.Entities {
             InstallmentNumber = installmentNumber;
             InstallmentTotal = installmentTotal;
             IsDeleted = false;
+            SendNotification = false;
         }
 
         public void Delete() {
@@ -65,12 +68,15 @@ namespace ControleFinanceiro.Domain.Entities {
         decimal amount,
         Guid? categoryId,
         DateTime date,
-        Guid accountId) {
+        Guid accountId, 
+        bool sendNotification
+        ) {
                 Description = description;
                 Amount = amount;
                 CategoryId = categoryId;
                 Date = date;
                 AccountId = accountId;
+                SendNotification = sendNotification;
         }
     }
 }

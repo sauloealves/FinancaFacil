@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ControleFinanceiro.Application.AI;
+using ControleFinanceiro.Application.Interfaces;
 
 namespace ControleFinanceiro.Application {
     public static class DependencyInjection {
@@ -35,6 +36,7 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<FinancialQueryService>();
             services.AddScoped<DeleteTransactionUseCase>();
             services.AddScoped<CreateBatchTransactionUseCase>();
+            services.AddScoped<IInvoiceImportService, InvoiceImportService>();
             return services;
         }
     }

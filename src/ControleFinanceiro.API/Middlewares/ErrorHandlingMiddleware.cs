@@ -18,11 +18,11 @@ namespace ControleFinanceiro.API.Middlewares {
                 await context.Response.WriteAsJsonAsync(
                     ApiResponse.Fail(ex.Message));
 
-            } catch(Exception) {
+            } catch(Exception ex) {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
                 await context.Response.WriteAsJsonAsync(
-                    ApiResponse.Fail("Erro interno no servidor."));
+                    ApiResponse.Fail($"Erro interno no servidor. {ex.Message}"));
             }
         }
     }

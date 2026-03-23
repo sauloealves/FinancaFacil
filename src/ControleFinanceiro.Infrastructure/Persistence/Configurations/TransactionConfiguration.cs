@@ -40,6 +40,8 @@ namespace ControleFinanceiro.Infrastructure.Persistence.Configurations {
 
                 builder.Property(t => t.InstallmentTotal);
 
+                builder.Property(t => t.SendNotification).HasDefaultValue(false);
+
                 builder.HasIndex(t => t.AccountId);
                 builder.HasIndex(t => t.OccurrenceGroupId);
             }

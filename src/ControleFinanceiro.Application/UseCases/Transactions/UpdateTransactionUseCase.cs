@@ -81,7 +81,8 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                 request.Value,
                 request.CategoryId,
                 request.StartDate,
-                request.AccountId
+                request.AccountId,
+                request.SendNotification == null ? false : request.SendNotification.Value
             );
 
             await _repository.SaveChangesAsync();

@@ -37,6 +37,8 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<DeleteTransactionUseCase>();
             services.AddScoped<CreateBatchTransactionUseCase>();
             services.AddScoped<IInvoiceImportService, InvoiceImportService>();
+            services.AddScoped<ChangePasswordUseCase>();
+
             return services;
         }
     }

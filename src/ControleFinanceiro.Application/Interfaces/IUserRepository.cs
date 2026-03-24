@@ -12,5 +12,6 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task AddAsync(User user);
         Task<User?> GetByIdAsync(Guid userId);
         Task UpdateAsync(User user);
+        
     }
 }

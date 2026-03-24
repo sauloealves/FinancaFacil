@@ -14,12 +14,14 @@ namespace ControleFinanceiro.API.Controllers {
         private readonly LoginUserUseCase _loginUserUseCase;
         private readonly ForgotPasswordUseCase _forgotPasswordUseCase;  
         private readonly ResetPasswordUseCase _resetPasswordUseCase;
+        private readonly ChangePasswordUseCase _changePasswordUseCase;
 
-        public AuthController(RegisterUserUseCase registerUserUseCase, LoginUserUseCase loginUserUseCase, ForgotPasswordUseCase forgotPasswordUseCase, ResetPasswordUseCase resetPasswordUseCase) {
+        public AuthController(RegisterUserUseCase registerUserUseCase, LoginUserUseCase loginUserUseCase, ForgotPasswordUseCase forgotPasswordUseCase, ResetPasswordUseCase resetPasswordUseCase, ChangePasswordUseCase changePasswordUseCase) {
             _registerUserUseCase = registerUserUseCase;
             _loginUserUseCase = loginUserUseCase;
             _forgotPasswordUseCase = forgotPasswordUseCase;
             _resetPasswordUseCase = resetPasswordUseCase;
+            _changePasswordUseCase = changePasswordUseCase;
         }
 
         [AllowAnonymous]
@@ -64,9 +66,13 @@ namespace ControleFinanceiro.API.Controllers {
             return Ok(ApiResponse.Ok());
         }
 
-        [HttpPost("teste")]        
-        public async Task<IActionResult> Teste() {
-            return Ok(ApiResponse<string>.Ok("Autenticado com sucesso!"));
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest request) {
+            
+            Guid userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+            await _changePasswordUseCase.ExecuteAsync(userId, request.CurrentPassword, request.NewPassword);
+            return Ok(ApiResponse.Ok());
+
         }
     }
 }

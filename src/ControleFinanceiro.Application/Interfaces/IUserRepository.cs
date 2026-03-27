@@ -11,7 +11,7 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task<User?> GetByEmailAsync(string email);
         Task AddAsync(User user);
         Task<User?> GetByIdAsync(Guid userId);
-        Task UpdateAsync(User user);
-        
+        Task UpdateAsync(User user);       
+        Task<User?> GetByPhoneNumberAsync(string phoneNumber);
     }
 }

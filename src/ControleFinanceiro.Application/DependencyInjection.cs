@@ -1,7 +1,11 @@
-﻿using ControleFinanceiro.Application.UseCases.Transactions;
+﻿using ControleFinanceiro.Application.AI;
+using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Application.UseCases.Accounts;
 using ControleFinanceiro.Application.UseCases.Auth;
 using ControleFinanceiro.Application.UseCases.Categories;
+using ControleFinanceiro.Application.UseCases.FailedTransactions;
+using ControleFinanceiro.Application.UseCases.Transactions;
+using ControleFinanceiro.Application.UseCases.Whatsapp;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,8 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ControleFinanceiro.Application.AI;
-using ControleFinanceiro.Application.Interfaces;
 
 namespace ControleFinanceiro.Application {
     public static class DependencyInjection {
@@ -38,7 +40,9 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<CreateBatchTransactionUseCase>();
             services.AddScoped<IInvoiceImportService, InvoiceImportService>();
             services.AddScoped<ChangePasswordUseCase>();
-
+            services.AddScoped<ProcessWhatsappMessageUseCase>();
+            services.AddScoped<ResolveFailedTransactionUseCase>();
+            services.AddScoped<ListFailedTransactionsUseCase>();
             return services;
         }
     }

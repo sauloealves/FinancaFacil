@@ -15,6 +15,8 @@ namespace ControleFinanceiro.Infrastructure.Persistence {
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Category> Categories => Set<Category>();    
         public DbSet<Transaction> Transactions => Set<Transaction>();
+        public DbSet<UserKeywordMapping> UserKeywordMappings => Set<UserKeywordMapping>();
+        public DbSet<FailedTransaction> FailedTransactions => Set<FailedTransaction>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) {

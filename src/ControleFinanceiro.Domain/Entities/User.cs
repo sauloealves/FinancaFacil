@@ -15,16 +15,19 @@ namespace ControleFinanceiro.Domain.Entities {
         public bool Active { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public string Plan { get; private set; } = "FREE";
+        public string PhoneNumber { get; set; }
+
 
         private User() { } // EF Core
 
-        public User(string name, Email email, PasswordHash passwordHash) {
+        public User(string name, Email email, PasswordHash passwordHash, string phoneNumber) {
             Id = Guid.NewGuid();
             Name = name ?? throw new ArgumentException("Nome é obrigatório.");
             Email = email ?? throw new ArgumentException("E-mail é obrigatório.");
             PasswordHash = passwordHash ?? throw new ArgumentException("Senha é obrigatória.");
             Active = true;
             CreatedAt = DateTime.Now;
+            PhoneNumber = phoneNumber;
         }
 
         public void Deactivate() {

@@ -95,6 +95,51 @@ namespace ControleFinanceiro.Application.AI
             var response = await _client.AskAsync(prompt);
             return response;
         }
+
+        public async Task<string?> ExtractCategoryAccountFromText(string text, List<string> availableCategories, List<string> availableAccount)
+        {
+            if (!availableCategories.Any())
+                return null;
+
+            var categoryNames = string.Join(", ", availableCategories);
+            var accountNames = string.Join(", ", availableAccount);
+
+            var prompt = $@"Você é um assistente especializado em extrair informações financeiras.
+
+            TEXTO DO USUÁRIO: ""{text}""
+
+            CATEGORIAS DISPONÍVEIS: {categoryNames}
+
+            CONTAS DISPONÍVEIS: {accountNames}
+
+            INSTRUÇÕES:
+            - Extraia SOMENTE a categoria e a conta mencionada no texto
+            - Se o texto mencionar uma conta, ignore a categoria e retorne NONE
+            - IGNORE palavras genéricas como: receita, despesa, entrada, saída, gasto, pagamento, recebimento, conta, valor, dia, hoje, insira
+            - Retorne EXATAMENTE o nome da categoria da lista acima que melhor se encaixa
+            - Se não encontrar nenhuma categoria válida, retorne: NONE
+
+            RESPONDA COM APENAS O NOME DA CATEGORIA E CONTA, SEPARADAS POR VIRGULA, SE UM DOS ITENS NAO VIER CONTA, OU SEM CATEGORIA COLOCAR NONE, E CATEGORIA VEM PRIMEIRO SEM EXPLICAÇÕES, PONTUAÇÃO EXTRA OU FORMATAÇÃO JSON.";
+
+            try
+            {
+                var response = await _client.AskAsync(prompt);
+                var extractedCategory = response.Split(',')[0]?.Trim().Trim('"', '\'', '.', ',', '`');
+                var extractedAccount = response.Split(',')[1]?.Trim().Trim('"', '\'', '.', ',', '`');
+
+                var matchedCategory = extractedAccount == "NONE" ? string.Empty : availableCategories.FirstOrDefault(c => 
+                    c.Equals(extractedCategory, StringComparison.OrdinalIgnoreCase));
+
+                var matchedAccount = extractedAccount == "NONE" ? string.Empty : availableAccount.FirstOrDefault(a => 
+                    a.Equals(extractedAccount, StringComparison.OrdinalIgnoreCase));
+
+                return matchedCategory + ", " + matchedAccount;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 
 }

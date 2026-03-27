@@ -43,13 +43,18 @@ namespace ControleFinanceiro.Application.UseCases.Auth {
             if(existingUser != null)
                 throw new InvalidOperationException("E-mail já cadastrado.");
 
+            var existingPhone = await _userRepository.GetByPhoneNumberAsync(request.PhoneNumber);
+            if(existingPhone != null)
+                throw new InvalidOperationException("Número de telefone já cadastrado.");
+
             var email = new Email(request.Email);
             var passwordHash = _passwordHasher.Hash(request.Password);
 
             var user = new User(
                 request.Name,
                 email,
-                new PasswordHash(passwordHash)
+                new PasswordHash(passwordHash),
+                request.PhoneNumber
             );
 
             await _userRepository.AddAsync(user);

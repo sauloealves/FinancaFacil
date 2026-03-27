@@ -34,7 +34,7 @@ namespace ControleFinanceiro.Application.Common {
 
         public static ApiResponse Ok() {
             return new ApiResponse {
-                Success = true
+                Success = true,
             };
         }
 

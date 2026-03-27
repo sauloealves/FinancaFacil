@@ -35,6 +35,9 @@ namespace ControleFinanceiro.Infrastructure.Persistence.Configurations {
                     .IsRequired();
             });
 
+            builder.Property(u => u.PhoneNumber)
+                .ValueGeneratedNever();                
+
             builder.Property(u => u.Active)
                 .IsRequired();
 

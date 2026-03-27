@@ -36,8 +36,10 @@ namespace ControleFinanceiro.Infrastructure {
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IAiClient, OpenAiClient>();
-            
-
+            services.AddScoped<IMatchingService, MatchingService>();  
+            services.AddScoped<IFailedTransactionRepository, FailedTransactionRepository>();
+            services.AddScoped<IMessageParserService, MessageParserService>();
+            services.AddScoped<IUserKeywordMappingRepository, UserKeywordMappingRepository>();
             return services;
         }
     }

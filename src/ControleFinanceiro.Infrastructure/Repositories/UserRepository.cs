@@ -36,5 +36,9 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
+        public async Task<User?> GetByPhoneNumberAsync(string phoneNumber) {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        }
     }
 }

@@ -77,8 +77,14 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
             return accounts;
         }
 
-        public async Task<decimal> GetSumInitialBalanceAsync(Guid userId) {
-            var sumInitialBalance = await _context.Accounts.Where(a => a.UserId == userId && !a.IsDeleted).SumAsync(a => (decimal?)a.InitialBalance) ?? 0;
+        public async Task<decimal> GetSumInitialBalanceAsync(Guid userId, Guid? accountId) {
+            var query = _context.Accounts.Where(a => a.UserId == userId && !a.IsDeleted);
+
+            if (accountId.HasValue) {
+                query = query.Where(a => a.Id == accountId.Value);
+            }
+
+            var sumInitialBalance = await query.SumAsync(a => (decimal?)a.InitialBalance) ?? 0;
 
             return sumInitialBalance;
         }

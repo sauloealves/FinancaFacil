@@ -23,7 +23,7 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                     }
                 }
 
-            var sumInitialBalance = await _accountRepository.GetSumInitialBalanceAsync(userId);
+            var sumInitialBalance = await _accountRepository.GetSumInitialBalanceAsync(userId, request.AccountId);
             var balance = await _repository.GetBalanceAsync(request.AccountId, userId, referenceDate) + sumInitialBalance;
 
             return new BalanceResponse() { Balance = balance, ReferenceDate = referenceDate};

@@ -3,6 +3,7 @@ using System;
 using ControleFinanceiro.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ControleFinanceiro.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325163513_AddPhoneNumber")]
+    partial class AddPhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,56 +86,6 @@ namespace ControleFinanceiro.Infrastructure.Migrations
                     b.HasIndex("UserId", "Name");
 
                     b.ToTable("Categories", (string)null);
-                });
-
-            modelBuilder.Entity("ControleFinanceiro.Domain.Entities.FailedTransaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsResolved")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("OriginalText")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<Guid?>("SuggestedAccount")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal?>("SuggestedAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("SuggestedCategory")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("SuggestedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("SuggestedType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId", "IsResolved");
-
-                    b.ToTable("FailedTransactions", (string)null);
                 });
 
             modelBuilder.Entity("ControleFinanceiro.Domain.Entities.PasswordResetToken", b =>
@@ -246,34 +199,6 @@ namespace ControleFinanceiro.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("ControleFinanceiro.Domain.Entities.UserKeywordMapping", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Keyword")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId", "Keyword")
-                        .IsUnique();
-
-                    b.ToTable("UserKeywordMappings", (string)null);
                 });
 
             modelBuilder.Entity("ControleFinanceiro.Domain.Entities.Category", b =>

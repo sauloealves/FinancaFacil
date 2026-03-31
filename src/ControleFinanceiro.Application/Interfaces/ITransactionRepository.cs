@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Domain.Entities;
+﻿using ControleFinanceiro.Application.DTOs.Transactions;
+using ControleFinanceiro.Domain.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,7 @@ namespace ControleFinanceiro.Application.Interfaces {
         Task<decimal> GetIncomeByMonth(Guid userId, int month, int year);
         Task AddBatchAsync(Guid userId, List<Transaction> transactions) ;
 
-        }
+        Task<List<RecurringTransactionDetailResponse>> GetRecurringTransactionsAsync(Guid userId, DateTime fromDate, DateTime toDate);
+
+    }
 }

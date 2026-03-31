@@ -18,11 +18,13 @@ namespace ControleFinanceiro.API.Controllers {
         private readonly AiIntentService _intentService;
         public readonly FinancialQueryService _queryService;
         private readonly GetTransactionsUseCase _getUseCase;
+        private readonly ITransactionRepository _transactionRepo;
 
-        public AIController(AiIntentService intentService, FinancialQueryService financialQueryService, GetTransactionsUseCase getUseCase) {
+        public AIController(AiIntentService intentService, FinancialQueryService financialQueryService, GetTransactionsUseCase getUseCase, ITransactionRepository transactionRepo) {
             _intentService = intentService;
             _queryService = financialQueryService;
             _getUseCase = getUseCase;
+            _transactionRepo = transactionRepo;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string query) {
@@ -32,6 +34,20 @@ namespace ControleFinanceiro.API.Controllers {
             var result = await _getUseCase.ExecuteAsync(userId, new Application.DTOs.Transaction.GetTransactionsFilter() {EndDate = DateTime.Now, StartDate = DateTime.Now.AddMonths(-4), AccountId = null, OccurrenceGroupId = null});
             var response = await _intentService.AIResult(query,result);
             return Ok(ApiResponse<AIResponse>.Ok(new AIResponse {Descricao = response }));
+        }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummary([FromQuery] string prompt) {
+            var userId = GetUserId();   
+            var data = await _intentService.GetPeriodAsync(prompt);
+            var transactions = await _transactionRepo.GetRecurringTransactionsAsync(userId,data.StartDate,data.EndDate);
+            var response = await _intentService.GenerateFinancialSummary(transactions,prompt);
+            return Ok(ApiResponse<AIResponse>.Ok(new AIResponse { Descricao = response }));
+        }
+
+        private Guid GetUserId() {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Guid.Parse(userIdClaim!);
         }
     }
 }

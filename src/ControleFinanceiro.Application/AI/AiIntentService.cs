@@ -1,4 +1,6 @@
-﻿using ControleFinanceiro.Application.Interfaces;
+﻿using ControleFinanceiro.Application.DTOs.Transaction;
+using ControleFinanceiro.Application.DTOs.Transactions;
+using ControleFinanceiro.Application.Interfaces;
 
 using System;
 using System.Collections.Generic;
@@ -140,6 +142,53 @@ namespace ControleFinanceiro.Application.AI
                 return null;
             }
         }
-    }
 
+        public async Task<PeriodResultDto> GetPeriodAsync(string prompt)
+        {
+            prompt = $@"Extraia somente o periodo da pergunta no texto {prompt}
+                Retorne no formato JSON: 
+                {{
+                    ""startDate"": ""data de início"",
+                    ""endDate"": ""data de término""
+                }}
+                Use o formato de data: aaaa-MM-dd
+                Se não encontrar um período, retorne: 
+                {{
+                    ""startDate"": null,
+                    ""endDate"": null
+                }}
+                Somente retorne o JSON, sem explicações ou formatação adicional.
+                ";
+            var response = await _client.AskAsync(prompt);
+
+            return JsonSerializer.Deserialize<PeriodResultDto>(response, new JsonSerializerOptions {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+
+        public async Task<string> GenerateFinancialSummary(List<RecurringTransactionDetailResponse> financialDataJson, string promptUsuario)
+        {
+            var financialData = financialDataJson.Select(t => new {
+                Date = t.Date.ToString("yyyy-MM-dd"),
+                Amount = t.Amount,
+                Type = t.TypeDescription,
+                Account = t.AccountName,
+                Category = t.CategoryName ?? "Sem categoria"
+            });
+            var json = JsonSerializer.Serialize(financialData, new JsonSerializerOptions {
+                WriteIndented = false 
+            });
+
+            var prompt = $@"Você é um assistente financeiro especializado em resumir dados financeiros.
+            DADOS FINANCEIROS(JSON): {json}
+            INSTRUÇÕES:
+            - Analise os dados financeiros fornecidos
+            - Resuma as principais informações, como total de receitas, despesas, saldo e categorias mais relevantes
+            - Use uma linguagem clara e amigável
+            - Considere o contexto fornecido pelo usuário: {promptUsuario}";
+
+            var response = await _client.AskAsync(prompt);
+            return response;
+        }
+    }
 }

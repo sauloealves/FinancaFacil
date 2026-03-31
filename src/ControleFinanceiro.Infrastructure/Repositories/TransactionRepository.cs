@@ -1,4 +1,5 @@
 ﻿using ControleFinanceiro.Application.Interfaces;
+using ControleFinanceiro.Application.DTOs.Transactions;
 using ControleFinanceiro.Domain.Entities;
 using ControleFinanceiro.Domain.Enums;
 using ControleFinanceiro.Infrastructure.Persistence;
@@ -147,6 +148,52 @@ namespace ControleFinanceiro.Infrastructure.Repositories {
                     t.Date.Month == month &&
                     t.Date.Year == year && !t.IsDeleted)
                 .SumAsync(t => (decimal?)t.Amount) ?? 0;
-        }
+        }       
+
+        public async Task<List<RecurringTransactionDetailResponse>> GetRecurringTransactionsAsync(
+            Guid userId, 
+            DateTime fromDate, 
+            DateTime toDate)
+        {
+            var query = _context.Transactions
+                .Where(t => t.UserId == userId && !t.IsDeleted)
+                .Join(
+                    _context.Accounts.Where(a => !a.IsDeleted),
+                    t => t.AccountId,
+                    a => a.Id,
+                    (t, a) => new { Transaction = t, Account = a })
+                .GroupJoin(
+                    _context.Categories.Where(c => !c.IsDeleted),
+                    ta => ta.Transaction.CategoryId,
+                    c => c.Id,
+                    (ta, categories) => new { ta.Transaction, ta.Account, Category = categories.FirstOrDefault() })
+                .Where(x => x.Transaction.CategoryId != null); // Somente com categoria
+
+            // Filtro de data
+            query = query.Where(x => x.Transaction.Date >= fromDate);
+            query = query.Where(x => x.Transaction.Date <= toDate);
+
+            var result = await query
+                .OrderByDescending(x => x.Transaction.Date)
+                .Select(x => new RecurringTransactionDetailResponse
+                {
+                    TransactionId = x.Transaction.Id,
+                    Date = x.Transaction.Date,
+                    Amount = x.Transaction.Amount,
+                    Type = x.Transaction.Type,
+                    TypeDescription = x.Transaction.Type == TransactionType.Income ? "Receita" :
+                                     x.Transaction.Type == TransactionType.Expense ? "Despesa" : "Outro",
+                    AccountName = x.Account.Name,
+                    CategoryName = x.Category != null ? x.Category.Name : null,
+                    Description = x.Transaction.Description,
+                    OccurrenceType = x.Transaction.OccurrenceType,
+                    OccurrenceGroupId = x.Transaction.OccurrenceGroupId,
+                    InstallmentNumber = x.Transaction.InstallmentNumber,
+                    InstallmentTotal = x.Transaction.InstallmentTotal
+                })
+                .ToListAsync();
+
+            return result;
+}
     }
 }

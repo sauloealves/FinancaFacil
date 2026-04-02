@@ -40,6 +40,7 @@ namespace ControleFinanceiro.Infrastructure {
             services.AddScoped<IFailedTransactionRepository, FailedTransactionRepository>();
             services.AddScoped<IMessageParserService, MessageParserService>();
             services.AddScoped<IUserKeywordMappingRepository, UserKeywordMappingRepository>();
+            services.AddScoped<IBudgetRepository, BudgetRepository>();
             return services;
         }
     }

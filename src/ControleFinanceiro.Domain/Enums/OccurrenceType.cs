@@ -8,6 +8,6 @@ namespace ControleFinanceiro.Domain.Enums {
     public enum OccurrenceType {
         Single = 1,
         Installment = 2,
-        Recurring = 3
+        Recurring = 3,
     }
 }

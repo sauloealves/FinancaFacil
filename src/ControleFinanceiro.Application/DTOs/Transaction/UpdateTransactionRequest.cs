@@ -16,7 +16,7 @@ namespace ControleFinanceiro.Application.DTOs.Transaction {
         public Guid? ToAccountId { get; set; }
         public RecurrenceType Recurrence { get; set; }
         public DateTime? EndDate { get; set; }
-        public EntryType Type { get; set; }
+        public EntryType Type { get; set; }        
 
         public bool? SendNotification { get; set; }
     }

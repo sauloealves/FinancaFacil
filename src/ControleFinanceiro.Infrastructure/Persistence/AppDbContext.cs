@@ -1,15 +1,8 @@
 ﻿using ControleFinanceiro.Domain.Entities;
-
 using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ControleFinanceiro.Infrastructure.Persistence {
-    public class AppDbContext :DbContext {
+    public class AppDbContext : DbContext {
         public DbSet<User> Users => Set<User>();
         public DbSet<PasswordResetToken> PasswordResetToken => Set<PasswordResetToken>();
         public DbSet<Account> Accounts => Set<Account>();
@@ -17,6 +10,11 @@ namespace ControleFinanceiro.Infrastructure.Persistence {
         public DbSet<Transaction> Transactions => Set<Transaction>();
         public DbSet<UserKeywordMapping> UserKeywordMappings => Set<UserKeywordMapping>();
         public DbSet<FailedTransaction> FailedTransactions => Set<FailedTransaction>();
+        
+        // Novos DbSets para Budget
+        public DbSet<Budget> Budgets => Set<Budget>();
+        public DbSet<BudgetMonth> BudgetMonths => Set<BudgetMonth>();
+        public DbSet<BudgetItem> BudgetItems => Set<BudgetItem>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) {

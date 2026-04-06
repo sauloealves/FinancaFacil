@@ -44,6 +44,10 @@ namespace ControleFinanceiro.Infrastructure.Persistence.Configurations {
 
                 builder.HasIndex(t => t.AccountId);
                 builder.HasIndex(t => t.OccurrenceGroupId);
+
+                // Adicionar aos índices existentes
+                builder.HasIndex(t => new { t.UserId, t.CategoryId, t.Date });
+                builder.HasIndex(t => new { t.UserId, t.Date });
             }
         }
     }

@@ -2,6 +2,7 @@
 using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Application.UseCases.Accounts;
 using ControleFinanceiro.Application.UseCases.Auth;
+using ControleFinanceiro.Application.UseCases.Budgets;
 using ControleFinanceiro.Application.UseCases.Categories;
 using ControleFinanceiro.Application.UseCases.FailedTransactions;
 using ControleFinanceiro.Application.UseCases.Transactions;
@@ -43,6 +44,9 @@ namespace ControleFinanceiro.Application {
             services.AddScoped<ProcessWhatsappMessageUseCase>();
             services.AddScoped<ResolveFailedTransactionUseCase>();
             services.AddScoped<ListFailedTransactionsUseCase>();
+            services.AddScoped<DeleteBudgetUseCase>();
+            services.AddScoped<SyncBudgetCategoriesUseCase>();            
+            services.AddScoped<AddCategoryToActiveBudgetsUseCase>();
             return services;
         }
     }

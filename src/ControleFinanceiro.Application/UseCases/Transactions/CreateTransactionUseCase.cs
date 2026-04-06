@@ -90,7 +90,7 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                     request.Value,
                     type,
                     date,
-                    $"{request.Description} ({i-1}/{request.InstallmentTo})",
+                    $"{request.Description} ({i}/{request.InstallmentTo})",
                     request.CategoryId,
                     OccurrenceType.Installment,
                     groupId,

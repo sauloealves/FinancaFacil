@@ -1,6 +1,7 @@
 using ControleFinanceiro.API.Middlewares;
 using ControleFinanceiro.Application;
 using ControleFinanceiro.Application.Interfaces;
+using ControleFinanceiro.Application.UseCases.Budgets;
 using ControleFinanceiro.Application.UseCases.Invoice;
 using ControleFinanceiro.Infrastructure;
 using ControleFinanceiro.Infrastructure.Repositories;
@@ -23,6 +24,13 @@ builder.Services.AddHttpClient<OpenAiClient>();
 builder.Services.AddScoped<IPdfTextExtractor, PdfTextExtractor>();
 builder.Services.AddScoped<IAiParserService, AiParserService>();
 builder.Services.AddScoped<ICsvTextExtractor, CsvTextExtractor>();
+builder.Services.AddScoped<CreateBudgetUseCase>();
+builder.Services.AddScoped<GetBudgetsUseCase>();
+builder.Services.AddScoped<GetBudgetByIdUseCase>();
+builder.Services.AddScoped<GetBudgetSummaryUseCase>();
+builder.Services.AddScoped<GetBudgetMonthsUseCase>();
+builder.Services.AddScoped<UpdateBudgetItemsUseCase>();
+builder.Services.AddScoped<GetTransactionsByMonthAndCategoryUseCase>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {

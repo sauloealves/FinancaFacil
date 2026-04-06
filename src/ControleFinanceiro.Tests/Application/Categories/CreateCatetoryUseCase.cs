@@ -1,6 +1,7 @@
 ﻿using ControleFinanceiro.Application.DTOs;
 using ControleFinanceiro.Application.DTOs.Category;
 using ControleFinanceiro.Application.Interfaces;
+using ControleFinanceiro.Application.UseCases.Budgets;
 using ControleFinanceiro.Application.UseCases.Categories;
 using ControleFinanceiro.Domain.Entities;
 
@@ -17,11 +18,12 @@ namespace ControleFinanceiro.Tests.Application.Categories {
         [Fact]
         public async Task Should_Create_Category_Successfully() {
             var repositoryMock = new Mock<ICategoryRepository>();
-            var useCase = new CreateCategoryUseCase(repositoryMock.Object);
+            var addCategoryToActiveBudgetsUseCaseMock = new Mock<AddCategoryToActiveBudgetsUseCase>(null);
             var userId = Guid.NewGuid();
             var request = new CreateCategoryRequest {
                 Name = "Alimentação"
             };
+            var useCase = new CreateCategoryUseCase(repositoryMock.Object, addCategoryToActiveBudgetsUseCaseMock.Object);   
             await useCase.AddAsync(userId, request.Name);
             repositoryMock.Verify(r =>
                 r.AddAsync(It.Is<Category>(c =>

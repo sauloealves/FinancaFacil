@@ -139,10 +139,12 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                 ? TransactionType.Income
                 : TransactionType.Expense;
 
+            var groupOrdered = group.OrderBy(t => t.Date).ToList();
+
             if (referenceTransaction.OccurrenceType == OccurrenceType.Installment) {
                 await UpdateInstallmentGroup(group, request, transactionType, referenceTransaction.InstallmentNumber ?? 1, group.Count);
             } else if (referenceTransaction.OccurrenceType == OccurrenceType.Recurring) {
-                await UpdateRecurringGroup(userId, group, request, transactionType, group.First().Date);
+                await UpdateRecurringGroup(userId, group, request, transactionType, groupOrdered.First().Date);
             }
 
             await _repository.SaveChangesAsync();
@@ -203,18 +205,22 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
             UpdateTransactionRequest request,
             TransactionType type,
             DateTime startDate) {
-            if (request.Recurrence == null)
-                throw new InvalidOperationException("Recurrence type required.");
+
+            RecurrenceType recorrenceType;
+
+            if (request.Recurrence == 0)
+                recorrenceType = CalculateRecurrencyType(transactions);
+            else
+                recorrenceType = request.Recurrence;
 
             var endDate = request.EndDate ?? startDate.AddYears(80);
             var orderedTransactions = transactions.OrderBy(t => t.Date).ToList();
 
-            // Calcular quantas transações são necessárias
             var expectedDates = new List<DateTime>();
             var currentDate = startDate;
             while (currentDate <= endDate) {
                 expectedDates.Add(currentDate);
-                currentDate = AddRecurrence(currentDate, request.Recurrence);
+                currentDate = AddRecurrence(currentDate, recorrenceType);
             }
 
             // Atualizar transações existentes
@@ -229,6 +235,76 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
                     request.SendNotification ?? false
                 );
             }           
+        }
+
+        private RecurrenceType CalculateRecurrencyType(List<Transaction> transactions) {
+            if(transactions == null || transactions.Count < 2)
+                throw new ArgumentException("É necessário pelo menos duas transações");
+
+            var transactionOrdered = transactions.OrderBy(t => t.Date).ToList();
+            var intervals = new List<double>();
+
+            for(int i = 1; i < transactionOrdered.Count; i++) {
+                var diff = (transactionOrdered[i].Date - transactionOrdered[i - 1].Date).TotalDays;
+                intervals.Add(diff);
+            }
+
+            if(!intervals.Any())
+                return RecurrenceType.Monthly;
+
+            intervals.Sort();
+
+            double q1 = Percentile(intervals, 25);
+            double q3 = Percentile(intervals, 75);
+            double iqr = q3 - q1;
+
+            double lowerBound = q1 - 1.5 * iqr;
+            double upperBound = q3 + 1.5 * iqr;
+
+            var filtered = intervals
+                .Where(x => x >= lowerBound && x <= upperBound)
+                .ToList();
+
+            if(!filtered.Any())
+                filtered = intervals; 
+
+            double median = Percentile(filtered, 50);
+
+            double avg = filtered.Average();
+            double variance = filtered.Average(x => Math.Pow(x - avg, 2));
+            double stdDev = Math.Sqrt(variance);
+            
+            if(median <= 8)
+                return RecurrenceType.Weekly;
+
+            if(median <= 16)
+                return RecurrenceType.BiWeekly;
+
+            if(median <= 40)
+                return RecurrenceType.Monthly;
+
+            if(median >= 300)
+                return RecurrenceType.Yearly;
+
+            return RecurrenceType.Monthly;
+        }
+        private double Percentile(List<double> sequence, double percentile) {
+            if(sequence == null || sequence.Count == 0)
+                throw new ArgumentException("Sequência vazia");
+
+            var sorted = sequence.OrderBy(x => x).ToList();
+
+            double position = (sorted.Count + 1) * percentile / 100.0;
+            int leftIndex = (int)Math.Floor(position) - 1;
+            double fraction = position - Math.Floor(position);
+
+            if(leftIndex < 0)
+                return sorted[0];
+
+            if(leftIndex >= sorted.Count - 1)
+                return sorted.Last();
+
+            return sorted[leftIndex] + fraction * (sorted[leftIndex + 1] - sorted[leftIndex]);
         }
 
         private static DateTime AddRecurrence(DateTime date, RecurrenceType recurrence) {

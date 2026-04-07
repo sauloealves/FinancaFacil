@@ -41,6 +41,7 @@ namespace ControleFinanceiro.Infrastructure {
             services.AddScoped<IMessageParserService, MessageParserService>();
             services.AddScoped<IUserKeywordMappingRepository, UserKeywordMappingRepository>();
             services.AddScoped<IBudgetRepository, BudgetRepository>();
+            services.AddScoped<IExportService, ExportService>();
             return services;
         }
     }

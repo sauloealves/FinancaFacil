@@ -2,6 +2,7 @@ using ControleFinanceiro.API.Middlewares;
 using ControleFinanceiro.Application;
 using ControleFinanceiro.Application.Interfaces;
 using ControleFinanceiro.Application.UseCases.Budgets;
+using ControleFinanceiro.Application.UseCases.Export;
 using ControleFinanceiro.Application.UseCases.Invoice;
 using ControleFinanceiro.Infrastructure;
 using ControleFinanceiro.Infrastructure.Repositories;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<GetBudgetSummaryUseCase>();
 builder.Services.AddScoped<GetBudgetMonthsUseCase>();
 builder.Services.AddScoped<UpdateBudgetItemsUseCase>();
 builder.Services.AddScoped<GetTransactionsByMonthAndCategoryUseCase>();
+builder.Services.AddScoped<ExportUserDataUseCase>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {

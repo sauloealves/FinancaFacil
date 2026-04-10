@@ -95,7 +95,14 @@ namespace ControleFinanceiro.Application.UseCases.Transactions {
 
             if (request.EditMode == "single") {
                 if (structuralChange) {
-                    existing.Delete();
+
+                    if (request.FromAccountId.HasValue && request.ToAccountId.HasValue) {
+                        var transferGroup = group.Where(t => t.CategoryId == null).ToList();
+                        foreach (var t in transferGroup)
+                            t.Delete();
+                    } else {
+                        existing.Delete();
+                    }
                     await _repository.SaveChangesAsync();
 
                     var createRequest = MapToCreate(request);
